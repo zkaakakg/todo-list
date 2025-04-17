@@ -14,11 +14,10 @@ public class MemberDto {
     private String password;
     private String email;
 
-    public Member toEntity(){
+    public Member toEntity(String encodedPassword){
         return Member.builder()
-                .id(id)
                 .username(username)
-                .password(password)
+                .password(encodedPassword)
                 .email(email)
                 .build();
     }
