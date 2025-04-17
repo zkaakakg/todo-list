@@ -1,1 +1,28 @@
 @import "tailwindcss";
+
+body {
+  @apply font-mono;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+.typing-demo {
+  width: fit-content;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid black;
+  animation: typing 2.5s steps(20, end), blink 0.75s step-end infinite;
+}
