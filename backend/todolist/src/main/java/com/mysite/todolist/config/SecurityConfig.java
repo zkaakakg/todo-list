@@ -31,6 +31,7 @@ public class SecurityConfig {
                         .loginPage("/login")
                         .loginProcessingUrl("/member/login")
                         .defaultSuccessUrl("/", true)
+                        .usernameParameter("email")
                         .failureHandler((request, response, exception) -> {
                             exception.printStackTrace(); // 콘솔에 찍힘
                             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "로그인 실패");
