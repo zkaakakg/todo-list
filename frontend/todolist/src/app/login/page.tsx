@@ -1,15 +1,15 @@
 "use client";
-import "../globals.css";
 import { useState } from "react";
+import CommonButton from "../components/CommonButton";
 
 type LoginForm = {
-  username: string;
+  email: string;
   password: string;
 };
 
 export default function LoginPage() {
   const [form, setForm] = useState<LoginForm>({
-    username: "",
+    email: "",
     password: "",
   });
 
@@ -23,7 +23,7 @@ export default function LoginPage() {
     e.preventDefault();
 
     const params = new URLSearchParams();
-    params.append("username", form.username);
+    params.append("email", form.email);
     params.append("password", form.password);
 
     try {
@@ -47,46 +47,55 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black p-30">
-      <div className="max-w-md w-[600px] h-[390px] bg-white p-8 rounded-2xl shadow-lg flex flex-col justify-between">
-        <h4 className="text-2xl font-bold text-gray-800 text-center">LOGIN</h4>
-        <form
-          className="flex flex-col justify-between flex-grow mt-4 px-5"
-          onSubmit={handleSubmit}
-        >
-          <div className="flex flex-col gap-3">
-            <input
-              name="username"
-              placeholder="아이디"
-              onChange={handleChange}
-              value={form.username}
-              className="bg-gray-200 shadow-inner  py-3 px-5 rounded-lg"
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder="비밀번호"
-              onChange={handleChange}
-              value={form.password}
-              className="bg-gray-200 shadow-inner  py-3 px-5 rounded-lg"
-            />
+    <div className="min-h-screen flex items-center justify-center bg-orange-50 p-10">
+      <div className="w-full max-w-md ">
+        <div className="w-full flex justify-center">
+          <div>
+            {" "}
+            {/* Welcome To-Do List !의 길이만큼 */}
+            <h1 className="text-3xl font-extrabold text-black typing-demo mb-6 font-mono">
+              Welcome To-Do List !
+            </h1>
+          </div>
+        </div>
+        <h4 className="text-2xl font-bold text-gray-800 text-center mb-6">
+          ✳ LOGIN
+        </h4>
+        <form className="space-y-6" onSubmit={handleSubmit}>
+          <div>
+            <div>
+              <input
+                name="email"
+                placeholder="E-Mail"
+                onChange={handleChange}
+                value={form.email}
+                required
+                className="w-full border-b border-gray-500 focus:outline-none py-2 placeholder-gray-500 text-sm mb-5"
+              />
+            </div>
+            <div>
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                onChange={handleChange}
+                value={form.password}
+                required
+                className="w-full border-b border-gray-500 focus:outline-none py-2 placeholder-gray-500 text-sm mb-5"
+              />
+            </div>
             {message && <p className="text-red-600 text-sm">{message}</p>}
           </div>
 
           {/* 버튼을 하단에 고정 */}
           <div className="mt-6">
-            <button
-              type="submit"
-              className="w-full py-3 px-5 bg-black font-semibold text-white text-m rounded-lg focus:outline-none hover:opacity-90"
+            <CommonButton type="submit">Submit</CommonButton>
+            <a
+              href="/signup"
+              className="block text-center underline mx-auto mt-3"
             >
-              로그인
-            </button>
-            <button
-              type="button"
-              className="w-full mt-3 py-3 px-5 bg-gray-600 font-semibold text-white text-m rounded-lg focus:outline-none hover:opacity-90"
-            >
-              회원가입
-            </button>
+              Sign Up
+            </a>
           </div>
         </form>
       </div>
