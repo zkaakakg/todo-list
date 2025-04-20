@@ -18,26 +18,37 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> {})
+                .cors(cors -> {
+                })
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                new AntPathRequestMatcher("/member/signup"),
-                                new AntPathRequestMatcher("/member/login")
+                                new AntPathRequestMatcher("/login"),
+                                new AntPathRequestMatcher("/signup")
                         ).permitAll()
-                        .anyRequest().permitAll()
+                        .requestMatchers("/").authenticated()
+                        .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/member/login")
                         .defaultSuccessUrl("/", true)
                         .usernameParameter("email")
+                        .permitAll()
                         .failureHandler((request, response, exception) -> {
                             exception.printStackTrace(); // 콘솔에 찍힘
                             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "로그인 실패");
                         })
-                )  ;
-                //.httpBasic(basic -> basic.disable()); // 브라우저 인증 팝업 비활성화
+                )
+                .logout((logout) -> logout
+                        .logoutUrl("/member/logout")
+                        .logoutSuccessHandler((request, response, authentication) -> {
+                            response.setStatus(HttpServletResponse.SC_OK);
+                        })
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                );
+        //.httpBasic(basic -> basic.disable()); // 브라우저 인증 팝업 비활성화
 
         return http.build();
     }
