@@ -1,103 +1,136 @@
-import Image from "next/image";
+// app/page.tsx
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import CommonButton from "./components/CommonButton";
+import LogoutButton from "./components/LogoutButton";
+
+interface User {
+  name: string;
+  email: string;
+}
 
 export default function Home() {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  useEffect(() => {
+    fetch("http://localhost:8080/member/user", {
+      credentials: "include", // 인증 쿠키 포함
+    })
+      .then(async (res) => {
+        if (res.status === 401) {
+          router.push("/login");
+        } else if (res.ok) {
+          const data: User = await res.json();
+          setUser(data);
+        } else {
+          console.error("알 수 없는 오류 발생");
+        }
+      })
+      .catch((err) => {
+        router.push("/login");
+      })
+      .finally(() => setLoading(false));
+  }, [router]);
+  if (loading) return <p>로딩 중...</p>;
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div>
+      {user ? (
+        <div className="p-10 min-h-screen bg-orange-50">
+          <LogoutButton />
+          <h1 className="text-2xl font-bold text-center">
+            ✳ {user.name}님의 TO-DO List ✳
+          </h1>
+          <div className="max-w-xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden mt-8">
+            <div className="px-4 py-2 mt-5">
+              <div className="text-center">
+                <input
+                  id="date"
+                  type="date"
+                  className="px-4 py-2 font-medium text-xl focus:outline-none"
+                />
+              </div>
+            </div>
+            <form className="w-full max-w-lg mx-auto px-4 py-2">
+              <div className="flex items-center border-b-2 border-black-500 py-2">
+                <input
+                  className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+                  type="text"
+                  placeholder="Add a task"
+                />
+                <CommonButton type="submit">Add</CommonButton>
+              </div>
+            </form>
+            <div className="flex justify-start px-12">
+              <ul className="flex space-x-4 mb-2" id="ex1" role="tablist">
+                <li className="nav-item" role="presentation">
+                  <a
+                    className="nav-link active hover:underline  active:text-yellow-700"
+                    id="ex1-tab-1"
+                    data-mdb-tab-init
+                    href="#ex1-tabs-1"
+                    role="tab"
+                    aria-controls="ex1-tabs-1"
+                    aria-selected="true"
+                  >
+                    All
+                  </a>
+                  <span className="ml-3">|</span>
+                </li>
+                <li className="nav-item" role="presentation">
+                  <a
+                    className="nav-link hover:underline active:text-yellow-700"
+                    id="ex1-tab-2"
+                    data-mdb-tab-init
+                    href="#ex1-tabs-2"
+                    role="tab"
+                    aria-controls="ex1-tabs-2"
+                    aria-selected="false"
+                  >
+                    Active
+                  </a>
+                  <span className="ml-3">|</span>
+                </li>
+                <li className="nav-item" role="presentation">
+                  <a
+                    className="nav-link hover:underline active:text-yellow-700"
+                    id="ex1-tab-3"
+                    data-mdb-tab-init
+                    href="#ex1-tabs-3"
+                    role="tab"
+                    aria-controls="ex1-tabs-3"
+                    aria-selected="false"
+                  >
+                    Completed
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <ul className="divide-y divide-gray-200 px-4">
+              <li className="py-4 px-8">
+                <div className="flex items-center">
+                  <input
+                    id="todo1"
+                    name="todo1"
+                    type="checkbox"
+                    className="h-4 w-4 text-black-600  accent-black-800 border-gray-300 rounded"
+                  />
+                  <label htmlFor="todo1" className="ml-3 block text-gray-900">
+                    <span className="text-lg font-medium">
+                      Finish project proposal
+                    </span>
+                    <span className="text-sm font-light ">Due on 4/1/23</span>
+                  </label>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      ) : (
+        <p>유저 정보를 불러올 수 없습니다.</p>
+      )}
     </div>
   );
 }
