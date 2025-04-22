@@ -16,7 +16,7 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
 
     public void create(MemberDto memberDto) {
-        if (memberRepository.existsByUsername(memberDto.getUsername()) || memberRepository.existsByEmail(memberDto.getEmail())) {
+        if (memberRepository.existsByEmail(memberDto.getEmail())) {
             throw new DuplicateResourceException("이미 존재하는 회원입니다.");
         }
 
