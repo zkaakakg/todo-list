@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import CommonButton from "../components/CommonButton";
+import { useRouter } from "next/navigation";
 
 type LoginForm = {
   email: string;
@@ -14,6 +15,7 @@ export default function LoginPage() {
   });
 
   const [message, setMessage] = useState<string>("");
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -35,10 +37,10 @@ export default function LoginPage() {
         body: params.toString(),
         credentials: "include",
       });
-      if (response.status === 200) {
-        window.location.href = "/";
+      if (response.ok) {
+        router.push("/");
       } else {
-        setMessage("회원님의 정보가 잘못입력되었습니다.");
+        setMessage("아이디 혹은 비밀번호가 틀렸습니다.");
       }
     } catch (error) {
       console.error("Error:", error);
