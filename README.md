@@ -1,4 +1,4 @@
-![제목 없는 동영상 - Clipchamp로 제작 (2)](https://github.com/user-attachments/assets/0be0637f-d971-4ab9-ace1-95ddac8bbc14)![제목 없는 동영상 - Clipchamp로 제작 (2)](https://github.com/user-attachments/assets/6738b351-cb42-4de8-aa8e-ba3287610c1b)# To-Do List ✔️
+# To-Do List ✔️
 
 **Next.js + Spring Boot** 미니 프로젝트
 
