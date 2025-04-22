@@ -34,7 +34,7 @@ public class MemberController {
         return "회원가입 성공";
     }
 
-    @GetMapping("/user")
+    @GetMapping("/")
     public ResponseEntity<?> getCurrentUser(Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인되지 않았습니다.");
@@ -48,6 +48,4 @@ public class MemberController {
                 "name", member.getUsername()
         ));
     }
-
-
 }
