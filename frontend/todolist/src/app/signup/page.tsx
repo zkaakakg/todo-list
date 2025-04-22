@@ -2,6 +2,7 @@
 
 import { useState, ChangeEvent, FormEvent } from "react";
 import CommonButton from "../components/CommonButton";
+import { useRouter } from "next/navigation";
 
 interface SignUpForm {
   username: string;
@@ -19,6 +20,7 @@ export default function SignUpPage() {
   });
 
   const [message, setMessage] = useState<string>("");
+  const router = useRouter();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -47,8 +49,7 @@ export default function SignUpPage() {
         }),
       });
 
-      const text = await response.text();
-      setMessage(text);
+      router.push("/login");
     } catch (error) {
       console.error("Error:", error);
       setMessage("에러 발생");
