@@ -2,7 +2,6 @@ package com.mysite.todolist.dto;
 
 import com.mysite.todolist.entity.Member;
 import com.mysite.todolist.entity.Task;
-import jakarta.persistence.Column;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -17,15 +16,13 @@ public class TaskDto {
     private String title;
     private String status;
     private LocalDate dueDate;
-    private LocalDate createdAt;
-    private Member member;
+    private Long memberId;
 
-    public Task toEntity(){
+    public Task toEntity(Member member){
         return Task.builder()
                 .title(title)
                 .status(status)
                 .dueDate(dueDate)
-                .createdAt(createdAt)
                 .member(member)
                 .build();
     }
