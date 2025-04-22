@@ -26,3 +26,7 @@ body {
   border-right: 2px solid black;
   animation: typing 2.5s steps(20, end), blink 0.75s step-end infinite;
 }
+
+nextjs-portal {
+  display: none;
+}
