@@ -14,20 +14,20 @@
 
 **1. 회원가입/로그인**
 
-![alt text](<제목 없는 동영상 - Clipchamp로 제작 (2).gif>)
+![image](https://github.com/user-attachments/assets/7979e348-9fc5-466c-a93e-c164262b7a8e)
 
 **2. Task 조회/추가/수정/삭제**
 
-![alt text](image.png)
+![image](https://github.com/user-attachments/assets/8b9fc345-28a3-46f1-8424-cbe77cba9b5e)![image](https://github.com/user-attachments/assets/d307f2c5-9b51-4291-924c-50272c00aa66)
 
 - Task 추가
 - Task 목록 날짜 별로 조회 가능
 - All / Active / Completed 별로 조회 가능
 
-![alt text](image-1.png)
+![image](https://github.com/user-attachments/assets/28bf7c4c-5913-4b72-829d-db9e3c9cd61c)
 
 - Task 상태변화(체크)
 
-![alt text](image-2.png)
+[image](https://github.com/user-attachments/assets/9f1d8c69-b642-4097-a3a3-a0c5ee29b208)
 
 - Task 수정/삭제
