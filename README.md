@@ -24,7 +24,7 @@
 - Task 목록 날짜 별로 조회 가능
 - All / Active / Completed 별로 조회 가능
 
-![image](https://github.com/user-attachments/assets/b7c20283-bf1d-407c-8082-fe1c88911695)
+![image](https://github.com/user-attachments/assets/7a625720-c7fc-4a2a-8cb8-0e7c069bc200)
 
 - Task 상태변화(체크)
 
