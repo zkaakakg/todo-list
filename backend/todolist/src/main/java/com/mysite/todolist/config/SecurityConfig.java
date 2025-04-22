@@ -27,7 +27,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 new AntPathRequestMatcher("/member/login"),
                                 new AntPathRequestMatcher("/member/signup"),
-                                new AntPathRequestMatcher("/task/list/**")
+                                new AntPathRequestMatcher("/task/**")
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -38,8 +38,7 @@ public class SecurityConfig {
                         .permitAll()
                         .failureHandler((request, response, exception) -> {
                             request.getSession().invalidate();
-                            exception.printStackTrace(); // 콘솔에 찍힘
-                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "로그인 실패");
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                         })
                 )
                 .logout((logout) -> logout
@@ -50,8 +49,6 @@ public class SecurityConfig {
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                 );
-        //.httpBasic(basic -> basic.disable()); // 브라우저 인증 팝업 비활성화
-
         return http.build();
     }
 
