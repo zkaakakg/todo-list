@@ -15,6 +15,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -23,19 +25,19 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                new AntPathRequestMatcher("/login"),
-                                new AntPathRequestMatcher("/signup")
+                                new AntPathRequestMatcher("/member/login"),
+                                new AntPathRequestMatcher("/member/signup"),
+                                new AntPathRequestMatcher("/task/list/**")
                         ).permitAll()
-                        .requestMatchers("/").authenticated()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login")
                         .loginProcessingUrl("/member/login")
                         .defaultSuccessUrl("/", true)
                         .usernameParameter("email")
                         .permitAll()
                         .failureHandler((request, response, exception) -> {
+                            request.getSession().invalidate();
                             exception.printStackTrace(); // 콘솔에 찍힘
                             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "로그인 실패");
                         })
@@ -63,5 +65,5 @@ public class SecurityConfig {
             AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
-}
 
+}
