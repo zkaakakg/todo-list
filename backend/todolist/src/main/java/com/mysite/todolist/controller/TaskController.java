@@ -17,7 +17,7 @@ import java.util.List;
 public class TaskController {
     private final TaskService taskService;
     
-    @GetMapping("/list")
+    @GetMapping("/")
     public ResponseEntity<List<TaskDto>> getList(){
         try {
             List<TaskDto> tasks = taskService.getList();
@@ -28,7 +28,7 @@ public class TaskController {
         }
     }
 
-    @PostMapping("/create")
+    @PostMapping("/")
     @ResponseBody
     public String create(@RequestBody TaskDto dto){
         try {
@@ -41,7 +41,7 @@ public class TaskController {
         return "할 일 등록 성공";
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     @ResponseBody
     public String update(@PathVariable("id") Long id, @RequestBody TaskDto taskDto){
         try{
@@ -54,7 +54,7 @@ public class TaskController {
         return "Task 수정 성공";
     }
 
-    @PutMapping("/update/status/{id}")
+    @PutMapping("/{id}/status")
     @ResponseBody
     public String statusUpdate(@PathVariable("id") Long id, @RequestBody StatusUpdateDto statusUpdateDto){
         try{
@@ -67,7 +67,7 @@ public class TaskController {
         return "상태 업데이트 성공";
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     @ResponseBody
     public String delete(@PathVariable("id") Long id){
         try{
