@@ -5,7 +5,6 @@ import { useEffect, useState, ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import CommonButton from "./components/CommonButton";
 import LogoutButton from "./components/LogoutButton";
-import { log } from "console";
 
 interface User {
   name: string;
@@ -27,7 +26,6 @@ interface Task {
 
 export default function Home() {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [selectedDate, setSelectedDate] = useState<string>(
     new Date().toISOString().split("T")[0]
@@ -43,14 +41,14 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    fetch("http://localhost:8080/member/user", {
+    fetch("http://localhost:8080/member/", {
       credentials: "include",
     })
       .then(async (res) => {
         if (res.ok) {
           const data: User = await res.json();
           setUser(data);
-          const taskRes = await fetch("http://localhost:8080/task/list", {
+          const taskRes = await fetch("http://localhost:8080/task/", {
             credentials: "include",
           });
           if (taskRes.ok) {
@@ -65,14 +63,11 @@ export default function Home() {
       })
       .catch((err) => {
         router.push("/login");
-      })
-      .finally(() => setLoading(false));
+      });
   }, [router]);
 
-  if (loading) return <p>로딩 중...</p>;
-
   const fetchTasks = async () => {
-    const taskRes = await fetch("http://localhost:8080/task/list", {
+    const taskRes = await fetch("http://localhost:8080/task/", {
       credentials: "include",
     });
     if (taskRes.ok) {
@@ -96,7 +91,7 @@ export default function Home() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:8080/task/create", {
+      const response = await fetch("http://localhost:8080/task/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -122,7 +117,7 @@ export default function Home() {
   const handleTaskStatusChange = async (taskId: number, newStatus: string) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/task/update/status/${taskId}`,
+        `http://localhost:8080/task/${taskId}/status`,
         {
           method: "PUT",
           headers: {
@@ -148,17 +143,14 @@ export default function Home() {
 
   const handleSaveClick = async (taskId: number) => {
     try {
-      const response = await fetch(
-        `http://localhost:8080/task/update/${taskId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({ ...form, title: editingTitle }),
-        }
-      );
+      const response = await fetch(`http://localhost:8080/task/${taskId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ ...form, title: editingTitle }),
+      });
       if (response.ok) {
         setEditingTaskId(null);
         await fetchTasks();
@@ -172,13 +164,10 @@ export default function Home() {
 
   const handleDelete = async (taskId: number) => {
     try {
-      const response = await fetch(
-        `http://localhost:8080/task/delete/${taskId}`,
-        {
-          method: "DELETE",
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`http://localhost:8080/task/${taskId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
       if (response.ok) {
         await fetchTasks();
       } else {
@@ -375,7 +364,7 @@ export default function Home() {
           </div>
         </div>
       ) : (
-        <p>유저 정보를 불러올 수 없습니다.</p>
+        <div className="p-10 min-h-screen bg-orange-50"></div>
       )}
     </div>
   );
