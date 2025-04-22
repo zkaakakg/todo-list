@@ -1,11 +1,7 @@
 "use client";
-
-import { useRouter } from "next/navigation";
 import { MouseEvent } from "react";
 
 export default function LogoutButton() {
-  const router = useRouter();
-
   const handleLogout = async (
     e: MouseEvent<HTMLButtonElement>
   ): Promise<void> => {
@@ -17,7 +13,7 @@ export default function LogoutButton() {
       });
 
       if (res.ok) {
-        router.push("/login");
+        window.location.href = "/login";
       } else {
         console.error("로그아웃 실패");
       }
