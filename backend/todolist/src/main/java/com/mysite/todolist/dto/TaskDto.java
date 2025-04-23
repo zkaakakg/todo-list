@@ -7,7 +7,6 @@ import lombok.*;
 import java.time.LocalDate;
 
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -27,9 +26,4 @@ public class TaskDto {
                 .build();
     }
 
-    public void update(Task task){
-        this.setTitle(task.getTitle());
-        this.setStatus(task.getStatus());
-        this.setDueDate(task.getDueDate());
-    }
 }
