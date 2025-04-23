@@ -11,7 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDate;
 
 @Entity
-@Table(name="task")
+@Table(name = "task")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -45,13 +45,13 @@ public class Task {
                 .build();
     }
 
-    public void update(String title, String status, LocalDate DueDate){
+    public void update(String title, String status, LocalDate dueDate) {
         this.title = title;
         this.status = status;
         this.dueDate = dueDate;
     }
 
-    public void statusUpdate(String status){
+    public void statusUpdate(String status) {
         this.status = status;
     }
 
