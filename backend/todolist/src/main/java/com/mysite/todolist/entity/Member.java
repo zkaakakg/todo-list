@@ -1,12 +1,14 @@
 package com.mysite.todolist.entity;
 
-import com.mysite.todolist.dto.MemberDto;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 
 @Entity
-@Table(name="member")
+@Table(name = "member")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,12 +25,4 @@ public class Member {
     @Column(unique = true)
     private String email;
 
-    public MemberDto toDto() {
-        return MemberDto.builder()
-                .id(id)
-                .username(username)
-                .password(password)
-                .email(email)
-                .build();
-    }
 }
