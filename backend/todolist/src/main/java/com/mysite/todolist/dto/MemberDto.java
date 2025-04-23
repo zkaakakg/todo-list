@@ -4,7 +4,6 @@ import com.mysite.todolist.entity.Member;
 import lombok.*;
 
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -22,9 +21,4 @@ public class MemberDto {
                 .build();
     }
 
-    public void update(Member member){
-        this.setUsername(member.getUsername());
-        this.setPassword(member.getPassword());
-        this.setEmail(member.getEmail());
-    }
 }
