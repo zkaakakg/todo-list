@@ -41,14 +41,14 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    fetch("http://localhost:8080/member/", {
+    fetch("http://localhost:8080/member", {
       credentials: "include",
     })
       .then(async (res) => {
         if (res.ok) {
           const data: User = await res.json();
           setUser(data);
-          const taskRes = await fetch("http://localhost:8080/task/", {
+          const taskRes = await fetch("http://localhost:8080/task", {
             credentials: "include",
           });
           if (taskRes.ok) {
@@ -67,7 +67,7 @@ export default function Home() {
   }, [router]);
 
   const fetchTasks = async () => {
-    const taskRes = await fetch("http://localhost:8080/task/", {
+    const taskRes = await fetch("http://localhost:8080/task", {
       credentials: "include",
     });
     if (taskRes.ok) {
@@ -91,7 +91,7 @@ export default function Home() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:8080/task/", {
+      const response = await fetch("http://localhost:8080/task", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
