@@ -6,19 +6,18 @@ import com.mysite.todolist.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/task")
 public class TaskController {
     private final TaskService taskService;
-    
-    @GetMapping("/")
-    public ResponseEntity<List<TaskDto>> getList(){
+
+    @GetMapping
+    public ResponseEntity<List<TaskDto>> getList() {
         try {
             List<TaskDto> tasks = taskService.getList();
             return ResponseEntity.ok(tasks);
@@ -28,9 +27,8 @@ public class TaskController {
         }
     }
 
-    @PostMapping("/")
-    @ResponseBody
-    public String create(@RequestBody TaskDto dto){
+    @PostMapping
+    public String create(@RequestBody TaskDto dto) {
         try {
             taskService.create(dto);
         } catch (Exception e) {
@@ -42,11 +40,10 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
-    @ResponseBody
-    public String update(@PathVariable("id") Long id, @RequestBody TaskDto taskDto){
-        try{
+    public String update(@PathVariable("id") Long id, @RequestBody TaskDto taskDto) {
+        try {
             taskService.update(id, taskDto);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
             return "Task 수정 실패";
@@ -55,11 +52,10 @@ public class TaskController {
     }
 
     @PutMapping("/{id}/status")
-    @ResponseBody
-    public String statusUpdate(@PathVariable("id") Long id, @RequestBody StatusUpdateDto statusUpdateDto){
-        try{
+    public String statusUpdate(@PathVariable("id") Long id, @RequestBody StatusUpdateDto statusUpdateDto) {
+        try {
             taskService.statusUpdate(id, statusUpdateDto);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
             return "상태 업테이트 실패";
@@ -68,17 +64,14 @@ public class TaskController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseBody
-    public String delete(@PathVariable("id") Long id){
-        try{
+    public String delete(@PathVariable("id") Long id) {
+        try {
             taskService.delete(id);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
             return "Task 삭제 실패";
         }
         return "Task 삭제 성공";
     }
-
-
 }
