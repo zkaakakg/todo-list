@@ -24,6 +24,7 @@ export default function SignUpPage() {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    setMessage("");
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
