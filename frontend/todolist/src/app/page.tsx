@@ -127,7 +127,7 @@ export default function Home() {
       if (response.ok) {
         await fetchTasks();
       } else {
-        console.error("상태 업데이트 실패패", await response.text());
+        console.error("상태 업데이트 실패", await response.text());
       }
     } catch (error) {
       console.error("Error:", error);
@@ -169,7 +169,7 @@ export default function Home() {
       if (response.ok) {
         await fetchTasks();
       } else {
-        console.error("Failed to delete task:", await response.text());
+        console.error("할 일 삭제 실패:", await response.text());
       }
     } catch (error) {
       console.error("Error:", error);
