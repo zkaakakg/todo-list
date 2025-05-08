@@ -24,57 +24,55 @@ interface Task {
   dueDate: string;
 }
 
+const day = new Date().toISOString().split("T")[0];
+
 export default function Home() {
   const [user, setUser] = useState<User | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [selectedDate, setSelectedDate] = useState<string>(
-    new Date().toISOString().split("T")[0]
-  );
+  const [selectedDate, setSelectedDate] = useState<string>(day);
   const [form, setForm] = useState<TaskForm>({
     title: "",
     status: "active",
-    dueDate: new Date().toISOString().split("T")[0],
+    dueDate: day,
   });
   const [filterType, setFilterType] = useState<string>("all");
   const [editingTaskId, setEditingTaskId] = useState<number | null>(null);
   const [editingTitle, setEditingTitle] = useState<string>("");
   const router = useRouter();
 
-  useEffect(() => {
-    fetch("http://localhost:8080/member", {
-      credentials: "include",
-    })
-      .then(async (res) => {
-        if (res.ok) {
-          const data: User = await res.json();
-          setUser(data);
-          const taskRes = await fetch("http://localhost:8080/task", {
-            credentials: "include",
-          });
-          if (taskRes.ok) {
-            const taskData: Task[] = await taskRes.json();
-            setTasks(taskData);
-          } else {
-            console.error("Failed to fetch tasks:", taskRes.statusText);
-          }
-        } else {
-          router.push("/login");
-        }
-      })
-      .catch((err) => {
-        router.push("/login");
+  const fetchUser = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/member", {
+        credentials: "include",
       });
-  }, [router]);
-
-  const fetchTasks = async () => {
-    const taskRes = await fetch("http://localhost:8080/task", {
-      credentials: "include",
-    });
-    if (taskRes.ok) {
-      const taskData: Task[] = await taskRes.json();
-      setTasks(taskData);
+      if (!response.ok) throw new Error();
+      const data: User = await response.json();
+      setUser(data);
+      await fetchTasks();
+    } catch {
+      router.push("/login");
     }
   };
+
+  const fetchTasks = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/task", {
+        credentials: "include",
+      });
+      if (response.ok) {
+        const data: Task[] = await response.json();
+        setTasks(data);
+      } else {
+        console.error("할 일 가져오기 실패", response.statusText);
+      }
+    } catch (err) {
+      console.error("Error:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.id]: e.target.value });
@@ -83,7 +81,6 @@ export default function Home() {
   const handleDateChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newDate = e.target.value;
     setSelectedDate(newDate);
-    // 폼과 필터링 모두에 같은 날짜를 사용합니다
     setForm({ ...form, dueDate: newDate });
   };
 
@@ -103,11 +100,11 @@ export default function Home() {
       if (response.ok) {
         setForm({
           ...form,
-          title: "", // 제출 후 제목 필드만 초기화
+          title: "",
         });
         await fetchTasks();
       } else {
-        console.error("Failed to create task:", await response.text());
+        console.error("할 일 등록 실패", await response.text());
       }
     } catch (error) {
       console.error("Error:", error);
@@ -130,12 +127,13 @@ export default function Home() {
       if (response.ok) {
         await fetchTasks();
       } else {
-        console.error("Failed to create task:", await response.text());
+        console.error("상태 업데이트 실패패", await response.text());
       }
     } catch (error) {
       console.error("Error:", error);
     }
   };
+
   const handleEditClick = (task: Task) => {
     setEditingTaskId(task.id);
     setEditingTitle(task.title);
@@ -155,7 +153,7 @@ export default function Home() {
         setEditingTaskId(null);
         await fetchTasks();
       } else {
-        console.error("Failed to update task:", await response.text());
+        console.error("할 일 수정 실패", await response.text());
       }
     } catch (error) {
       console.error("Error:", error);
@@ -182,7 +180,6 @@ export default function Home() {
     setFilterType(type);
   };
 
-  // 선택된 날짜와 필터 타입에 따라 작업 필터링
   const filteredTasks = tasks.filter((task) => {
     const matchesDate = task.dueDate === selectedDate;
 
