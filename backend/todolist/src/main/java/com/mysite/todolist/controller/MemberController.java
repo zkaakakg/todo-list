@@ -18,7 +18,7 @@ import java.util.Map;
 public class MemberController {
     private final MemberService memberService;
 
-    @PostMapping("/signup")
+    @PostMapping
     public String signup(@RequestBody MemberDto dto) {
         try {
             memberService.create(dto);
